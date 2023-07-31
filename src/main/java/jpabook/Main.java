@@ -1,7 +1,9 @@
 package jpabook;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderItem;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,9 +17,18 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
 
         try{
-            Order order = em.find(Order.class, 1L);
+//            Order order = em.find(Order.class, 1L);
+//            Long memberId = order.getMemberId();
 
-            Long memberId = order.getMemberId();
+            Order order = new Order();
+            //양방향 연관관계 세팅
+//            order.addOrderItem(new OrderItem());
+
+            //양방향 세팅 안하고 이렇게 해도됨
+            em.persist(order);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            em.persist(orderItem);
 
             tx.commit();
         }catch (Exception e){
